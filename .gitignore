@@ -1,0 +1,22 @@
+# Dataset data
+AnomalyCLIP-main/generate_dataset_json/data/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Results
+AnomalyCLIP-main/results/
+
+# Checkpoint
+AnomalyCLIP-main/checkpoint/
+
+# Installers
+*.deb
+*.sh
+
+# Textile dataset images
+textile_wo_edge/**/*.png
+textile_wo_edge/**/*.jpg

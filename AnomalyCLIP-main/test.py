@@ -110,7 +110,7 @@ def test(args):
             results[cls_name[0]]['pr_sp'].extend(text_probs.detach().cpu())
             anomaly_map = torch.stack([torch.from_numpy(gaussian_filter(i, sigma = args.sigma)) for i in anomaly_map.detach().cpu()], dim = 0 )
             results[cls_name[0]]['anomaly_maps'].append(anomaly_map)
-            # visualizer(items['img_path'], anomaly_map.detach().cpu().numpy(), args.image_size, args.save_path, cls_name)
+            visualizer(items['img_path'], anomaly_map.detach().cpu().numpy(), args.image_size, args.save_path, cls_name)
 
     table_ls = []
     image_auroc_list = []
@@ -176,13 +176,16 @@ def test(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("AnomalyCLIP", add_help=True)
     # paths
-    parser.add_argument("--data_path", type=str, default="./data/visa", help="path to test dataset")
+    # 核心修改1：将data_path默认值改为本地VisA路径（WSL格式，适配你的目录）
+    parser.add_argument("--data_path", type=str, default="./generate_dataset_json/data/VisA", help="path to test dataset")
     parser.add_argument("--save_path", type=str, default='./results/', help='path to save results')
     parser.add_argument("--checkpoint_path", type=str, default='./checkpoint/', help='path to checkpoint')
     # model
-    parser.add_argument("--dataset", type=str, default='mvtec')
+    # 核心修改2：将dataset默认值改为VisA（匹配你的测试数据集）
+    parser.add_argument("--dataset", type=str, default='VisA')
     parser.add_argument("--features_list", type=int, nargs="+", default=[6, 12, 18, 24], help="features used")
-    parser.add_argument("--image_size", type=int, default=518, help="image size")
+    # 核心修改3：image_size改为336（适配ViT-L/14@336px预训练模型，避免维度不匹配）
+    parser.add_argument("--image_size", type=int, default=336, help="image size")
     parser.add_argument("--depth", type=int, default=9, help="image size")
     parser.add_argument("--n_ctx", type=int, default=12, help="zero shot")
     parser.add_argument("--t_n_ctx", type=int, default=4, help="zero shot")
